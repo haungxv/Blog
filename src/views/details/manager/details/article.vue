@@ -16,6 +16,7 @@
 <script>
     import Change from './articles/change.vue'
 
+    import axios from 'axios';
     export default {
         name: "article",
         components: {Change},
@@ -50,6 +51,36 @@
             sub(name) {
                 this.lists = this.lists.filter(t => t.name != name)
             },
+            getArtList(){
+                let qs = require('qs');
+                let instance = axios.create({});
+                let data = {
+                    "account": this.account,
+                    "secret": this.secret,
+                    "type": 100,
+                };
+                axios.get("http://39.108.84.51:8888/cms/user/1")
+                    .then((res) => {
+                        if (res.status) {
+                            console.log("登陆成功！");
+                            localStorage.token = res.data.token;
+                            localStorage.account = this.account;
+                            localStorage.secret = this.secret;
+                            this.$emit('signIn');
+                        }
+                        this.account = '';
+                        this.secret = '';
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+        },
+        mounted(){
+            if (window.localStorage.getItem('token')) {
+                axios.defaults.headers.common['Authorization'] = "Basic " + btoa(window.localStorage.getItem('token')+":")
+            }
+                this.getArtList()
         }
     }
 </script>

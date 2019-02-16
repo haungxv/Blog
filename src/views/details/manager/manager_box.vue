@@ -73,6 +73,11 @@
                 this.show3=false;
                 this.show4=true;
             }
+        },
+        mounted(){
+            if (localStorage.remember) {
+                alert("本地存储有token")
+            }
         }
     }
 </script>
