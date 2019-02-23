@@ -14,7 +14,7 @@
         components: {Sign, ManagerBox},
         data() {
             return {
-                show:false
+                show:true
             }
         },
         methods: {

@@ -18,6 +18,10 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.(ttf|eot|svg|woff|woff2)$/,
+                use: 'url-loader'
+            },
+            {
                 test: /\.vue$/,
                 loader: 'vue-loader'
             },

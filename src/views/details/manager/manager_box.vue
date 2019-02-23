@@ -25,12 +25,16 @@
             <div class="left_list" @click="changeClick($event,1)">发表文章</div>
             <div class="left_list" @click="changeClick($event,2)">查看浏览量</div>
             <div class="left_list" @click="changeClick($event,3)">查看留言</div>
+            <div class="left_list" @click="changeClick($event,4)">回收站</div>
+            <div class="left_list" @click="changeClick($event,5)">草稿箱</div>
         </div>
         <div class="right">
             <write-article v-if="show_content[0]"></write-article>
             <publish v-if="show_content[1]"></publish>
             <check v-if="show_content[2]"></check>
             <talk v-if="show_content[3]"></talk>
+            <bin v-if="show_content[4]"></bin>
+            <drafts v-if="show_content[5]"></drafts>
         </div>
     </div>
 </template>
@@ -40,35 +44,37 @@
     import Check from "./details/check.vue";
     import Publish from "./details/publish.vue";
     import Talk from "./details/talk.vue";
+    import Bin from "./details/bin.vue";
+    import Drafts from "./details/drafts.vue";
 
 
     export default {
         name: "manager_box",
-        components: {Publish, Check, writeArticle, Talk},
+        components: {Publish, Check, writeArticle, Talk, Bin, Drafts},
         data() {
             return {
-                show_content: [true,false,false,false],
+                show_content: [true, false, false, false, false, false],
                 show_mask: false,
             }
         },
         methods: {
             changeColor(dom) {
                 let a = document.getElementsByClassName("left_list");
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 6; i++) {
                     a[i].setAttribute("class", "left_list");
                 }
                 dom.srcElement.setAttribute("class", "left_list font_color")
             },
             isShow(a) {
-                for(let i=0;i<4;i++){
-                    if(i===a){
-                        this.show_content[`${a}`]=true;
+                for (let i = 0; i < 6; i++) {
+                    if (i === a) {
+                        this.show_content[`${a}`] = true;
                         continue;
                     }
-                    this.show_content[`${i}`]=false;
+                    this.show_content[`${i}`] = false;
                 }
             },
-            changeClick(dom,a) {
+            changeClick(dom, a) {
                 this.changeColor(dom);
                 this.isShow(a);
                 this.menuClose();
@@ -100,7 +106,7 @@
     }
 
     .over {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -271,7 +277,7 @@
     .left {
         width: 270px;
         height: 100%;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: -270px;
         box-sizing: border-box;
@@ -367,7 +373,7 @@
     .manager_box .right {
         box-sizing: border-box;
         height: calc(100% - 70px);
-        border: 1px solid black;
+        /*border: 1px solid black;*/
         margin-top: 70px;
     }
 
