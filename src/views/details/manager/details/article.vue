@@ -3,7 +3,7 @@
         <div v-if="showChange">
             <div class="title">可对文章进行<span>删改</span>操作，共有<span>{{articles.total}}</span>篇文章</div>
             <div class="rotation_box">
-                <rotation></rotation>
+                <!--<rotation></rotation>-->
             </div>
             <div class="change"
                  v-for="list in articles.allArticle"
@@ -125,7 +125,6 @@
         width: 1000px;
         height: 650px;
         margin: 40px auto 40px;
-        /*border: 1px solid black;*/
         position: relative;
         overflow: hidden;
     }
@@ -207,7 +206,6 @@
     }
 
     .article_time {
-        /*border: 1px solid blue;*/
         width: 100px;
         float: right;
         margin-right: 20px;

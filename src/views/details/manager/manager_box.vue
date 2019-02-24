@@ -68,10 +68,10 @@
             isShow(a) {
                 for (let i = 0; i < 6; i++) {
                     if (i === a) {
-                        this.show_content[`${a}`] = true;
+                        this.$set(this.show_content,a,true);
                         continue;
                     }
-                    this.show_content[`${i}`] = false;
+                    this.$set(this.show_content,i,false);
                 }
             },
             changeClick(dom, a) {
@@ -373,7 +373,6 @@
     .manager_box .right {
         box-sizing: border-box;
         height: calc(100% - 70px);
-        /*border: 1px solid black;*/
         margin-top: 70px;
     }
 
