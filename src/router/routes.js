@@ -4,7 +4,7 @@ import Manager from '../views/manager.vue';
 export default[
     {
         path:'/',
-        redirect:'/manager'
+        redirect:'/user'
     },
     {
         path:'/user',

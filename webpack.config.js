@@ -103,7 +103,7 @@ if (isDev) {
     });
     config.plugins.push(
         new MiniCssExtractPlugin({
-            filename: "styles/[name].[contenthash:8].css",
+            filename: "components/[name].[contenthash:8].css",
             // chunkFilename: "[id].css"
         }),
     );

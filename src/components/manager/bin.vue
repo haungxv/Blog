@@ -4,7 +4,10 @@
 
 <script>
     export default {
-        name: "bin"
+        name: "bin",
+        methods:{
+
+        }
     }
 </script>
 

@@ -40,12 +40,12 @@
 </template>
 
 <script>
-    import writeArticle from "./details/article.vue";
-    import Check from "./details/check.vue";
-    import Publish from "./details/publish.vue";
-    import Talk from "./details/talk.vue";
-    import Bin from "./details/bin.vue";
-    import Drafts from "./details/drafts.vue";
+    import writeArticle from "../components/manager/article.vue";
+    import Check from "../components/manager/check.vue";
+    import Publish from "../components/manager/publish.vue";
+    import Talk from "../components/manager/talk.vue";
+    import Bin from "../components/manager/bin.vue";
+    import Drafts from "../components/manager/drafts.vue";
 
 
     export default {
@@ -68,10 +68,10 @@
             isShow(a) {
                 for (let i = 0; i < 6; i++) {
                     if (i === a) {
-                        this.$set(this.show_content,a,true);
+                        this.$set(this.show_content, a, true);
                         continue;
                     }
-                    this.$set(this.show_content,i,false);
+                    this.$set(this.show_content, i, false);
                 }
             },
             changeClick(dom, a) {
@@ -118,7 +118,7 @@
         z-index: 303;
     }
 
-    .manager_box .header {
+    .header {
         width: 100%;
         height: 70px;
         line-height: 73px;
@@ -132,7 +132,7 @@
         z-index: 302;
     }
 
-    .manager_box .header:after {
+    .header:after {
         display: block;
         clear: both;
         content: '';
@@ -366,7 +366,7 @@
         margin-top: 40px;
     }
 
-    .left_list:nth-child(5) {
+    .left_list:nth-child(7) {
         border-bottom: 1px solid #E6EAEA;
     }
 
@@ -375,6 +375,4 @@
         height: calc(100% - 70px);
         margin-top: 70px;
     }
-
-
 </style>

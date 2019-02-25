@@ -2,15 +2,12 @@
     <div class="article">
         <div v-if="showChange">
             <div class="title">可对文章进行<span>删改</span>操作，共有<span>{{articles.total}}</span>篇文章</div>
-            <div class="rotation_box">
-                <!--<rotation></rotation>-->
-            </div>
             <div class="change"
                  v-for="list in articles.allArticle"
                  :key="list.id">
                 <div class="left">
                     <div @click="change(list.title)" class="left_title">{{list.title}}</div>
-                    <div class="left_tag" v-for="(tag,index) in list.tags" :key="index">{{tag.name}}</div>
+                    <span class="left_tag" v-for="(tag,index) in list.tags" :key="index">{{tag.name}}&nbsp;&nbsp;</span>
                 </div>
                 <div @click="to_top(list.id)" class="to_top">置顶</div>
                 <div @click="sub(list.id)" class="sub_article">删除</div>
@@ -23,7 +20,7 @@
 
 <script>
     import Change from './articles/change.vue'
-    import Rotation from '../../components/rotation.vue'
+    import Rotation from '../public/rotation.vue'
 
     import axios from 'axios';
     import {
@@ -112,7 +109,8 @@
     }
 
     .article .title {
-        margin-top: 30px;
+        width:1100px;
+        margin: 30px auto 20px;
         letter-spacing: 0.1em;
     }
 
@@ -121,18 +119,10 @@
         font-size: 1.1em;
     }
 
-    .article .rotation_box {
-        width: 1000px;
-        height: 650px;
-        margin: 40px auto 40px;
-        position: relative;
-        overflow: hidden;
-    }
-
     .change {
         cursor: pointer;
         margin: 1px auto;
-        width: 1000px;
+        width: 1100px;
         border: 1px solid #f4f7f6;
         height: 80px;
         background-color: white;
@@ -148,7 +138,6 @@
     }
 
     .article .change .left {
-        /*border: 1px solid black;*/
         width: 600px;
         height: 50px;
         margin-top: 15px;
@@ -162,6 +151,7 @@
     }
 
     .article .left_tag {
+        font-size:15px;
         color: rgb(67, 220, 207);
     }
 

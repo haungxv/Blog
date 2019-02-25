@@ -1,27 +1,35 @@
 <template>
     <div class="public">
+        <div class="little_box_over" v-if="show_over" @click="downPublishKeep"></div>
         <div class="upper">
             <input class="title" type="text" v-model="title">
-            <div class="public_button">发表</div>
-            <div class="keep">保存</div>
+            <div class="public_button" @click="showPublishKeep('确认发表')">发表</div>
+            <div class="keep" @click="showPublishKeep('确认保存')">保存</div>
         </div>
-        <!--<form>-->
-        <!--技术分享：-->
-        <!--<input type="radio" value="tech" name="kind" checked="checked"/><br/>-->
-        <!--生活随笔：-->
-        <!--<input type="radio" value="life" name="kind" />-->
-        <!--</form>-->
         <mavon-editor v-model="context" :toolbars="toolbars" class="markdown"/>
+        <little-publish :publishOrKeep="publishOrKeep"
+                        v-if="show_publish_keep"
+                        :context="context"
+                        :title="title"
+        ></little-publish>
     </div>
 </template>
 
 <script>
+
+    import littlePublish from './publish/publish.vue'
+
     export default {
         name: "publish",
+        props: ['oldTitle', 'oldContext'],
+        components: {littlePublish},
         data() {
             return {
                 title: '文章标题',
+                show_over: false,
+                show_publish_keep: false,
                 context: '',
+                publishOrKeep:'',
                 toolbars: {
                     bold: true, // 粗体
                     italic: true, // 斜体
@@ -46,6 +54,21 @@
                     navigation: true // 导航目录
                 }
             }
+        },
+        methods: {
+            showPublishKeep(a) {
+                this.publishOrKeep=a;
+                this.show_over = true;
+                this.show_publish_keep = true;
+            },
+            downPublishKeep() {
+                this.show_over = false;
+                this.show_publish_keep = false;
+            }
+        },
+        mounted() {
+            this.title = this.oldTitle || '';
+            this.context = this.oldContext || '';
         }
     }
 </script>
@@ -54,6 +77,19 @@
     .public {
         background-color: #f4f7f6;
         height: 100%;
+    }
+
+    .little_box_over {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        background-color: #000;
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        z-index: 305;
     }
 
     .upper {
@@ -72,7 +108,6 @@
     .upper input {
         height: 36px;
         line-height: 36px;
-        border-radius: 5px;
         font-size: 1.05em;
         padding: 10px;
         box-sizing: border-box;
@@ -80,6 +115,7 @@
         margin-top: 10px;
         margin-left: 10px;
         -webkit-appearance: none;
+        border-radius: 5px;
         border: 1px solid #E6EAEA;
         width: calc(100% - 220px);
     }
@@ -120,6 +156,7 @@
 
     .markdown {
         height: calc(100% - 56px);
+        z-index: 302;
     }
 
 </style>
