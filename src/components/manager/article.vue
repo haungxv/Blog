@@ -1,7 +1,10 @@
 <template>
     <div class="article">
         <div v-if="showChange">
-            <div class="title">可对文章进行<span>删改</span>操作，共有<span>{{articles.total}}</span>篇文章</div>
+            <div class="title">
+                <div class="title_left">可对文章进行<span>删改</span>操作,共有<span>{{articles.total}}</span>篇文章</div>
+                <div class="title_right">全部文章</div>
+            </div>
             <div class="change"
                  v-for="list in articles.allArticle"
                  :key="list.id">
@@ -109,20 +112,39 @@
     }
 
     .article .title {
-        width:1100px;
-        margin: 30px auto 20px;
-        letter-spacing: 0.1em;
+        width: 1000px;
+        margin: 35px auto 30px;
     }
 
+    .article .title:after {
+        display: block;
+        content: '';
+        clear: both;
+        overflow: hidden;
+        visibility: hidden;
+        height: 0;
+    }
+
+    .article .title_left {
+        float: left;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 1.1em;
+    }
+
+    .article .title_right {
+        letter-spacing: 0.1em;
+        margin-right: 10px;
+        float: right;
+    }
     .article .title span {
         font-weight: 600;
         font-size: 1.1em;
     }
 
     .change {
-        cursor: pointer;
         margin: 1px auto;
-        width: 1100px;
+        width: 1000px;
         border: 1px solid #f4f7f6;
         height: 80px;
         background-color: white;
@@ -169,6 +191,7 @@
         line-height: 30px;
         border-radius: 15px;
         transition: 0.2s;
+        cursor:pointer;
     }
 
     .to_top:hover {
@@ -189,6 +212,7 @@
         line-height: 30px;
         border-radius: 15px;
         transition: 0.2s;
+        cursor:pointer;
     }
 
     .sub_article:hover {

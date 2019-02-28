@@ -45,18 +45,20 @@
 
 <script>
     import axios from 'axios'
+
     export default {
         name: "publish",
-        props: ['title','context','publishOrKeep', 'oldTag', 'oldSelect_two', 'oldSelect_type', 'oldIsOpen','oldIsTop'],
+        props: ['title', 'context', 'oldId', 'publishOrKeep', 'oldTag', 'oldSelect_two', 'oldSelect_type', 'oldIsOpen', 'oldIsTop', 'oldTags'],
         data() {
             return {
-                tag: "标签1.标签2.标签3.标签4.标签5",
-                tags:[],
-                selected_two: '请选择',
-                selected_type: '请选择',
+                tag: '',
+                tags: [],
+                selected_two: '',
+                selected_type: '',
                 isOpen: false,
-                isTop:false,
-                isPublish:true,
+                isTop: false,
+                isPublish: true,
+                id: '',
             }
         },
         methods: {
@@ -68,7 +70,7 @@
                 }
                 this.isOpen = !this.isOpen;
             },
-            top(){
+            top() {
                 if (this.isTop) {
                     document.getElementsByClassName("top_no")[0].setAttribute("class", "top_no")
                 } else {
@@ -76,12 +78,12 @@
                 }
                 this.isTop = !this.isTop;
             },
-            split_tag(){
-                let a=this.tag.split('.');
-                let length=a.length;
-                for(let i=0;i<length;i++){
+            split_tag() {
+                let a = this.tag.split('.');
+                let length = a.length;
+                for (let i = 0; i < length; i++) {
                     this.tags.push({
-                        "name":a[i]
+                        "name": a[i]
                     })
                 }
                 JSON.stringify(this.tags);
@@ -91,16 +93,17 @@
                 let qs = require('qs');
                 let instance = axios.create({});
                 let data = {
+                    "id": this.id,
                     "cate": this.selected_two,
                     "type": this.selected_type,
                     "is_enable": this.isOpen,
                     "on_top": this.isTop,
-                    "body":this.context,
+                    "body": this.context,
                     "published": this.isPublish,
                     "tags": this.tags,
                     "title": this.title,
                 };
-                instance.post("http://113.54.210.74:5000/cms/post", data)
+                instance.post("http://39.108.84.51:8888/cms/post", data)
                     .then((res) => {
                         if (res.status) {
                             alert("发表成功！");
@@ -109,25 +112,45 @@
                     .catch((err) => {
                         console.log(err)
                     })
+            },
+            getTagString(tags) {
+                console.log(tags);
+                let tagString = [];
+                let length=tags.length;
+                for(let i=0;i<length;i++){
+                    tagString[i]=tags[i].name;
+                }
+                this.tag=tagString.join('.');
             }
         },
         computed: {
             title_two() {
                 if (this.publishOrKeep === "确认发表") {
-                    this.isPublish=true;
+                    this.isPublish = true;
                     return '发表文章'
                 } else {
-                    this.isPublish=false;
+                    this.isPublish = false;
                     return '保存文章'
                 }
             }
         },
         mounted() {
             this.tag = this.oldTag || '标签1.标签2.标签3.标签4.标签5';
-            this.selected_two=this.oldSelect_two||'请选择';
-            this.selected_type=this.oldSelect_type||'请选择';
-            this.isOpen=this.oldIsOpen||false;
-            this.isTop=this.oldIsTop||false;
+            this.selected_two = this.oldSelect_two || '请选择';
+            this.selected_type = this.oldSelect_type || '请选择';
+            this.isOpen = this.oldIsOpen || false;
+            this.isTop = this.oldIsTop || false;
+            console.log("open:"+ this.isOpen);
+            this.id = this.oldId || '';
+            if (this.oldTags !== []) {
+                this.getTagString(this.oldTags);
+            }
+            if(this.isOpen){
+                document.getElementsByClassName("open_no")[0].setAttribute("class", "open_no open_no_after open_on_before");
+            }
+            if(this.isTop){
+                document.getElementsByClassName("top_no")[0].setAttribute("class", "top_no top_no_after top_on_before");
+            }
         }
     }
 </script>
@@ -219,13 +242,13 @@
         border: 2px rgb(67, 200, 207);
     }
 
-    .little_open,.little_top {
+    .little_open, .little_top {
         width: 360px;
         height: 30px;
         margin: 25px auto 0;
     }
 
-    .little_open:after,.little_top:after {
+    .little_open:after, .little_top:after {
         content: '';
         display: block;
         clear: both;
@@ -234,7 +257,7 @@
         visibility: hidden;
     }
 
-    .little_open > label,.little_top>label {
+    .little_open > label, .little_top > label {
         display: block;
         width: 80px;
         height: 30px;
@@ -242,14 +265,14 @@
         float: left;
     }
 
-    .little_open .open_field,.little_top .top_field {
+    .little_open .open_field, .little_top .top_field {
         box-sizing: border-box;
         float: left;
         height: 30px;
         margin-left: 5px;
     }
 
-    .little_open .open_field label,.little_top .top_field label {
+    .little_open .open_field label, .little_top .top_field label {
         box-sizing: border-box;
         height: 30px;
         display: inline-block;
@@ -257,7 +280,7 @@
         position: relative;
     }
 
-    .open_no:before,.top_no:before {
+    .open_no:before, .top_no:before {
         box-sizing: border-box;
         display: inline-block;
         content: "";
@@ -269,12 +292,12 @@
         transition: .3s ease-in;
     }
 
-    .open_on_before:before,.top_on_before:before {
+    .open_on_before:before, .top_on_before:before {
         background-color: rgb(67, 205, 207);
 
     }
 
-    .open_no:after,.top_no:after {
+    .open_no:after, .top_no:after {
         position: absolute;
         left: 4px;
         top: 6.5px;
@@ -286,11 +309,11 @@
         transition: .3s ease-in;
     }
 
-    .open_no_after:after,.top_no_after:after {
+    .open_no_after:after, .top_no_after:after {
         left: 25px;
     }
 
-    .open_yes,.top_yes {
+    .open_yes, .top_yes {
         height: 30px;
         line-height: 30px;
         float: left;

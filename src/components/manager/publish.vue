@@ -5,23 +5,30 @@
             <input class="title" type="text" v-model="title">
             <div class="public_button" @click="showPublishKeep('确认发表')">发表</div>
             <div class="keep" @click="showPublishKeep('确认保存')">保存</div>
+            <div class="back" @click="editor_back">BACK</div>
         </div>
         <mavon-editor v-model="context" :toolbars="toolbars" class="markdown"/>
         <little-publish :publishOrKeep="publishOrKeep"
                         v-if="show_publish_keep"
                         :context="context"
                         :title="title"
+                        :oldId="id"
+                        :oldSelect_two="select_two"
+                        :oldSelect_type="select_type"
+                        :oldTags="tags"
+                        :oldIsOpen="open"
+                        :oldIsTop="is_top"
         ></little-publish>
     </div>
 </template>
 
 <script>
-
+    import axios from 'axios';
     import littlePublish from './publish/publish.vue'
 
     export default {
         name: "publish",
-        props: ['oldTitle', 'oldContext'],
+        props: ['oldTitle', 'oldId', 'oldSelect_two', 'oldSelect_type', 'oldTags', 'oldIsOpen', 'oldIsTop'],
         components: {littlePublish},
         data() {
             return {
@@ -29,7 +36,13 @@
                 show_over: false,
                 show_publish_keep: false,
                 context: '',
-                publishOrKeep:'',
+                id: '',
+                tags: {},
+                open: false,
+                is_top: false,
+                publishOrKeep: '',
+                select_two: '',
+                select_type: '',
                 toolbars: {
                     bold: true, // 粗体
                     italic: true, // 斜体
@@ -57,18 +70,40 @@
         },
         methods: {
             showPublishKeep(a) {
-                this.publishOrKeep=a;
+                this.publishOrKeep = a;
                 this.show_over = true;
                 this.show_publish_keep = true;
             },
             downPublishKeep() {
                 this.show_over = false;
                 this.show_publish_keep = false;
-            }
+            },
+            editor_back() {
+                this.$emit("editor_back");
+            },
+            getDetail(id) {
+                axios.get("http://39.108.84.51:8888/blog/article/details/" + id)
+                    .then((res) => {
+                        if (res.status) {
+                            this.context = res.data.body;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            },
         },
         mounted() {
             this.title = this.oldTitle || '';
-            this.context = this.oldContext || '';
+            this.id = this.oldId || '';
+            this.select_two = this.oldSelect_two || '';
+            this.select_type = this.oldSelect_type || '';
+            this.tags = this.oldTags || [];
+            this.open = this.oldIsOpen || false;
+            this.is_top = this.oldIsTop || false;
+            if (this.id !== '') {
+                this.getDetail(this.id);
+            }
         }
     }
 </script>
@@ -117,7 +152,7 @@
         -webkit-appearance: none;
         border-radius: 5px;
         border: 1px solid #E6EAEA;
-        width: calc(100% - 220px);
+        width: calc(100% - 290px);
     }
 
     .upper input:focus {
@@ -140,6 +175,22 @@
         line-height: 28px;
         border-radius: 15px;
         transition: 0.2s;
+    }
+
+    .upper .back {
+        box-sizing: border-box;
+        cursor: pointer;
+        border: 1px solid #f4f7f6;
+        color: rgb(67, 220, 207);
+        width: 75px;
+        margin-top: 13px;
+        text-align: center;
+        float: left;
+        height: 30px;
+        line-height: 28px;
+        border-radius: 15px;
+        transition: 0.2s;
+        margin-left: 10px;
     }
 
     .upper div:hover {
